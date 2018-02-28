@@ -171,6 +171,64 @@ module Precious
       end
     end
 
+    # Rough and rude hack for https://gitlab.com/gitlab-org/gitlab-ce/issues/22440#note_60970845
+    # Rugged doesn't support Git LFS yet. Using shell.
+    def add_to_index(committer, dir, name, format, data, allow_same_ext = false)
+      # spaces must be dashes
+      dir.gsub!(' ', '-')
+      name.gsub!(' ', '-')
+
+      path = committer.wiki.page_file_name(name, format)
+
+      dir  = '/' if dir.strip.empty?
+
+      fullpath = ::File.join(*[dir, path])
+      fullpath = fullpath[1..-1] if fullpath =~ /^\//
+
+      index = committer.index
+
+      if index.current_tree && (tree = index.current_tree / (committer.wiki.page_file_dir || '/'))
+        tree = tree / dir unless tree.nil?
+      end
+
+      if tree
+        downpath = path.downcase.sub(/\.\w+$/, '')
+
+        tree.blobs.each do |blob|
+          next if committer.page_path_scheduled_for_deletion?(index.tree, fullpath)
+
+          existing_file     = blob.name.downcase.sub(/\.\w+$/, '')
+          existing_file_ext = ::File.extname(blob.name).sub(/^\./, '')
+
+          new_file_ext = ::File.extname(path).sub(/^\./, '')
+
+          if downpath == existing_file && !(allow_same_ext && new_file_ext == existing_file_ext)
+            raise Gollum::DuplicatePageError.new(dir, blob.name, path)
+          end
+        end
+      end
+
+      fullpath = fullpath.force_encoding('ascii-8bit') if fullpath.respond_to?(:force_encoding)
+
+      begin
+        data = committer.wiki.normalize(data)
+      rescue ArgumentError => err
+        # Swallow errors that arise from data being binary
+        raise err unless err.message.include?('invalid byte sequence')
+      end
+
+      # Write data to file.
+      dirname = File.dirname(fullpath)
+      unless File.directory?(dirname)
+        FileUtils.mkdir_p(dirname)
+      end
+      File.open(fullpath, "w") do |file|
+        file.write(data)
+      end
+      # Git add
+      `git add #{fullpath}`
+    end
+
     post '/uploadFile' do
       forbid unless @allow_editing
 
@@ -209,12 +267,8 @@ module Precious
 
       begin
         committer = Gollum::Committer.new(wiki, options)
-        committer.add_to_index(dir, filename, format, contents)
-        committer.after_commit do |committer, sha|
-          wiki.clear_cache
-          committer.update_working_dir(dir, filename, format)
-        end
-        committer.commit
+        add_to_index(committer, dir, filename, format, contents)
+        `git commit -m "#{options[:message]}"`
         redirect to(request.referer)
       rescue Gollum::DuplicatePageError => e
         @message = "Duplicate page: #{e.message}"
