@@ -4,22 +4,22 @@ Gem::Specification.new do |s|
   s.rubygems_version = '1.3.5'
   s.required_ruby_version = '>= 1.9'
 
-  s.name              = 'gollum'
-  s.version           = '4.1.2'
-  s.date              = '2017-08-07'
+  s.name              = 'inc_gollum'
+  s.version           = '4.1.2a'
+  s.date              = '2018-03-01'
   s.rubyforge_project = 'gollum'
   s.license           = 'MIT'
 
-  s.summary     = 'A simple, Git-powered wiki.'
-  s.description = 'A simple, Git-powered wiki with a sweet API and local frontend.'
+  s.summary     = 'Fork of a simple, Git-powered wiki.'
+  s.description = 'Standard gem for in-house staff, until official gollum progresses faster than our own fixes.'
 
   s.authors  = ['Tom Preston-Werner', 'Rick Olson']
   s.email    = 'tom@github.com'
-  s.homepage = 'http://github.com/gollum/gollum'
+  s.homepage = 'http://github.com/hannwong/gollum'
 
   s.require_paths = %w[lib]
 
-  s.executables = ['gollum']
+  s.executables = ['inc_gollum']
 
   s.rdoc_options = ['--charset=UTF-8']
   s.extra_rdoc_files = %w[README.md LICENSE]
@@ -47,7 +47,7 @@ Gem::Specification.new do |s|
     LICENSE
     README.md
     Rakefile
-    bin/gollum
+    bin/inc_gollum
     config.rb
     config.ru
     contrib/openrc/conf.d/gollum
