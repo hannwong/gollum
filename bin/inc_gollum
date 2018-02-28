@@ -162,7 +162,7 @@ MSG
     exit 0
   end
   opts.on("--version", "Display the current version of Gollum.") do
-    puts "Gollum " + Gollum::VERSION
+    puts "Inc Gollum " + Gollum::VERSION
     exit 0
   end
   
