@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 1.9'
 
   s.name              = 'inc_gollum'
-  s.version           = '5.0.1b-rc1'
+  s.version           = '5.0.1b-rc2'
   s.date              = '2018-03-26'
   s.rubyforge_project = 'inc_gollum'
   s.license           = 'MIT'
@@ -102,6 +102,7 @@ Gem::Specification.new do |s|
     lib/gollum/public/gollum/javascript/ace-1.2.5/ext-themelist.js
     lib/gollum/public/gollum/javascript/ace-1.2.5/ext-whitespace.js
     lib/gollum/public/gollum/javascript/ace-1.2.5/keybinding-emacs.js
+    lib/gollum/public/gollum/javascript/ace-1.2.5/keybinding-mmacs.js
     lib/gollum/public/gollum/javascript/ace-1.2.5/keybinding-vim.js
     lib/gollum/public/gollum/javascript/ace-1.2.5/mode-abap.js
     lib/gollum/public/gollum/javascript/ace-1.2.5/mode-abc.js
