@@ -102,6 +102,7 @@ Gem::Specification.new do |s|
     lib/gollum/public/gollum/javascript/ace-1.2.5/ext-themelist.js
     lib/gollum/public/gollum/javascript/ace-1.2.5/ext-whitespace.js
     lib/gollum/public/gollum/javascript/ace-1.2.5/keybinding-emacs.js
+    lib/gollum/public/gollum/javascript/ace-1.2.5/keybinding-mmacs.js
     lib/gollum/public/gollum/javascript/ace-1.2.5/keybinding-vim.js
     lib/gollum/public/gollum/javascript/ace-1.2.5/mode-abap.js
     lib/gollum/public/gollum/javascript/ace-1.2.5/mode-abc.js
